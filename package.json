@@ -1,0 +1,23 @@
+{
+  "name": "cfb-g2",
+  "version": "1.0.0",
+  "description": "College Football Play-by-Play for Even Realities G2 Smart Glasses",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "start": "node server.js",
+    "preview": "vite preview",
+    "qr": "evenhub qr --url http://localhost:5173",
+    "sim": "evenhub-simulator http://localhost:5173"
+  },
+  "dependencies": {
+    "@evenrealities/even_hub_sdk": "^0.0.13",
+    "express": "^4.21.0",
+    "http-proxy-middleware": "^3.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.0",
+    "vite": "^5.4.0"
+  }
+}
