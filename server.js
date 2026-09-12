@@ -7,22 +7,27 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Allow cross-origin requests from EvenHub WebView (file://, null origin, etc.)
-app.use('/espn', (req, res, next) => {
+// Handle CORS preflight for EvenHub WebView (file://, null origin, etc.)
+app.options('/espn/*', (req, res) => {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Methods', 'GET, OPTIONS');
   res.header('Access-Control-Allow-Headers', 'Content-Type');
-  if (req.method === 'OPTIONS') return res.sendStatus(204);
-  next();
+  res.sendStatus(204);
 });
 
 // Proxy /espn requests to ESPN's API (avoids CORS)
+// CORS headers are injected via onProxyRes so they survive the proxy pipe.
 app.use(
   '/espn',
   createProxyMiddleware({
     target: 'https://site.web.api.espn.com',
     changeOrigin: true,
     pathRewrite: { '^/espn': '' },
+    onProxyRes: (proxyRes) => {
+      proxyRes.headers['access-control-allow-origin'] = '*';
+      proxyRes.headers['access-control-allow-methods'] = 'GET, OPTIONS';
+      proxyRes.headers['access-control-allow-headers'] = 'Content-Type';
+    },
   }),
 );
 
