@@ -10,9 +10,27 @@ import type {
 } from './types';
 
 // ── Configuration ───────────────────────────────────────────────────
-// All requests go through /espn which is proxied to site.web.api.espn.com.
-// In dev: Vite proxy handles it. In production: Express server proxies it.
-const API_BASE = '/espn';
+// In dev (Vite): relative "/espn" works because the Vite proxy handles it.
+// On Render: relative "/espn" works because Express proxies it.
+// Inside EvenHub (.ehpk): the page is loaded locally, so we need the full
+//   Render URL to reach the ESPN proxy.
+const RENDER_URL = 'https://cfb-g2.onrender.com';
+
+function getApiBase(): string {
+  // If served from Render or localhost, relative path works (proxy handles it)
+  if (
+    typeof window !== 'undefined' &&
+    (window.location.hostname === 'localhost' ||
+     window.location.hostname === '127.0.0.1' ||
+     window.location.hostname.includes('onrender.com'))
+  ) {
+    return '/espn';
+  }
+  // Otherwise (EvenHub WebView, file://, etc.) use the full Render URL
+  return `${RENDER_URL}/espn`;
+}
+
+const API_BASE = getApiBase();
 const CFB = '/apis/site/v2/sports/football/college-football';
 
 // ── Fetchers ────────────────────────────────────────────────────────
