@@ -10,11 +10,10 @@ import type {
 } from './types';
 
 // ── Configuration ───────────────────────────────────────────────────
-// Dev (vite dev): relative "/espn" → Vite proxy handles it.
-// Production (.ehpk / Render): full URL so it works from any origin.
-const API_BASE = import.meta.env.DEV
-  ? '/espn'
-  : 'https://cfb-g2.onrender.com/espn';
+// All requests use relative "/espn" which is proxied to ESPN's API.
+// Dev: Vite proxy. Production: Express on Render. EvenHub .ehpk redirects
+// to the Render-hosted app so everything stays same-origin.
+const API_BASE = '/espn';
 const CFB = '/apis/site/v2/sports/football/college-football';
 
 // ── Fetchers ────────────────────────────────────────────────────────
