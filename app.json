@@ -2,14 +2,14 @@
   "package_id": "com.spiinner.cfbg2",
   "edition": "202601",
   "name": "CFB Play-by-Play",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "min_sdk_version": "0.0.13",
   "entrypoint": "index.html",
   "permissions": [
     {
       "name": "network",
       "desc": "Fetches live college football scores and play-by-play data from ESPN.",
-      "whitelist": ["https://cfb-g2.onrender.com"]
+      "whitelist": ["https://cfb-g2.onrender.com", "https://cfb-g2.onrender.com/*", "https://cfb-g2.onrender.com/**"]
     }
   ],
   "supported_languages": ["en"]
